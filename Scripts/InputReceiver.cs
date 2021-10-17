@@ -11,6 +11,7 @@ public class InputReceiver : MonoBehaviour
     [SerializeField] private KeyCode weapon1Button;
     [SerializeField] private KeyCode weapon2Button;
     [SerializeField] private KeyCode mapButton;
+    [SerializeField] private KeyCode specialPowerButton;
 
     private const string HORIZONTAL = "Horizontal";
     private const string VERTICAL = "Vertical";
@@ -22,6 +23,7 @@ public class InputReceiver : MonoBehaviour
     public bool IsPressWeapon1Button { get; private set; }
     public bool IsPressWeapon2Button { get; private set; }
     public bool IsPressOpenMapButton { get; private set; }
+    public bool IsPressSpecialPowerButton { get; private set; }
 
     public float HorizontalInput { get; private set; }
     public float VerticalInput { get; private set; }
@@ -45,5 +47,6 @@ public class InputReceiver : MonoBehaviour
         IsPressWeapon1Button = Input.GetKeyDown(weapon1Button);
         IsPressWeapon2Button = Input.GetKeyDown(weapon2Button);
         IsPressOpenMapButton = Input.GetKeyDown(mapButton);
+        IsPressSpecialPowerButton = Input.GetKeyDown(specialPowerButton);
     }
 }
