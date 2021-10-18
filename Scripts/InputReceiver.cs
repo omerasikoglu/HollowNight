@@ -8,10 +8,13 @@ public class InputReceiver : MonoBehaviour
     [SerializeField] private KeyCode jumpButton;
     [SerializeField] private KeyCode holdButton;
     [SerializeField] private KeyCode dashButton;
+    [SerializeField] private KeyCode blockButton;
     [SerializeField] private KeyCode weapon1Button;
     [SerializeField] private KeyCode weapon2Button;
     [SerializeField] private KeyCode mapButton;
     [SerializeField] private KeyCode specialPowerButton;
+    
+
 
     private const string HORIZONTAL = "Horizontal";
     private const string VERTICAL = "Vertical";
@@ -20,6 +23,7 @@ public class InputReceiver : MonoBehaviour
     public bool IsJumping { get; private set; }
     public bool IsHolding { get; private set; }
     public bool IsDashing { get; private set; }
+    public bool IsBlocking { get; private set; }
     public bool IsPressWeapon1Button { get; private set; }
     public bool IsPressWeapon2Button { get; private set; }
     public bool IsPressOpenMapButton { get; private set; }
@@ -44,6 +48,7 @@ public class InputReceiver : MonoBehaviour
         IsJumping = Input.GetKeyDown(jumpButton);
         IsHolding = Input.GetKeyDown(holdButton);
         IsDashing = Input.GetKeyDown(dashButton);
+        IsBlocking = Input.GetKeyDown(blockButton);
         IsPressWeapon1Button = Input.GetKeyDown(weapon1Button);
         IsPressWeapon2Button = Input.GetKeyDown(weapon2Button);
         IsPressOpenMapButton = Input.GetKeyDown(mapButton);
