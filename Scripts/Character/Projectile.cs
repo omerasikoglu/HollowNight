@@ -16,8 +16,10 @@ public class Projectile : MonoBehaviour
     {
         this.damage = weapon.GetWeaponDamage();
         this.projectileImpactAudio = weapon.GetImpactAudio();
-        rb.velocity = transform.forward * weapon.GetProjectileSpeed();
+        rb.velocity = UtilsClass.GetMouseDirection(weapon.transform) * weapon.GetProjectileSpeed();
+        
     }
+
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

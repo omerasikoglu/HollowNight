@@ -7,6 +7,7 @@ using UnityEngine;
 public class PlayerMovementManager : MonoBehaviour
 {
     [SerializeField] private float movementSpeed;
+    [SerializeField] private Transform[] weapons;
 
     private InputReceiver inputReceiver;
     private Rigidbody2D rb;
@@ -30,20 +31,37 @@ public class PlayerMovementManager : MonoBehaviour
     }
     private void Update()
     {
-        CheckSpriteDirection();
+        RotateCharacterAndWeaponsWithMousePosition();
     }
-
-    private void CheckSpriteDirection()
+    private void RotateCharacterAndWeaponsWithMousePosition()
     {
-        if (canFlip && (facingDirection > 0 && inputReceiver.HorizontalInput < 0) ||
-            (facingDirection < 0 && inputReceiver.HorizontalInput > 0)) Flip();
-    }
+        Vector3 screenPoint = Camera.main.WorldToScreenPoint(transform.localPosition);
+        if (inputReceiver.mousePosition.x < screenPoint.x)
+        {
+            foreach (Transform weaponTransform in weapons)
+            {
+                weaponTransform.localScale = new Vector3(-1f, -1f, 1f);
 
-    private void Flip()
-    {
-        facingDirection = inputReceiver.HorizontalInput;
-        transform.Rotate(0f, 180f, 0f);
+            }
+            transform.localScale = Vector3.one;
+        }
+        else
+        {
+            foreach (Transform weaponTransform in weapons)
+            {
+                weaponTransform.localScale = Vector3.one;
+            }
+            transform.localScale = new Vector3(-1f, 1f, 1f);
+        }
 
+        Vector2 offset = new Vector2(inputReceiver.mousePosition.x - screenPoint.x,
+                                     inputReceiver.mousePosition.y - screenPoint.y);
+        float angle = UtilsClass.GetAngleFromVector(offset);
+
+        foreach (Transform weaponTransform in weapons)
+        {
+            weaponTransform.rotation = Quaternion.Euler(0, 0, angle);
+        }
     }
 
     private void FixedUpdate()
@@ -67,5 +85,18 @@ public class PlayerMovementManager : MonoBehaviour
     public float GetFacingDirection()
     {
         return facingDirection;
+    }
+
+    private void CheckSpriteDirection()
+    {
+        if (canFlip && (facingDirection > 0 && inputReceiver.HorizontalInput < 0) ||
+            (facingDirection < 0 && inputReceiver.HorizontalInput > 0)) Flip(transform);
+    }
+
+    public void Flip(Transform transform)
+    {
+        facingDirection = inputReceiver.HorizontalInput;
+        transform.Rotate(0f, 180f, 0f);
+
     }
 }
