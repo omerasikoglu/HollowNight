@@ -6,14 +6,15 @@ public class RangedWeapon : Weapon
 {
     [Header("Ranged Weapon Script")]
 
-    
+    [SerializeField] protected Transform firePoint;
+
     [SerializeField] private int maxAmmo;
     [SerializeField] private int projectileSpeed;
 
     [SerializeField] private AudioClip projectileImpactAudio;
     [SerializeField] private AudioClip weaponReloadAudio;
 
-    private int currentAmmo;
+    [ReadOnly]public int currentAmmo;
 
     protected override void Awake()
     {
@@ -21,7 +22,7 @@ public class RangedWeapon : Weapon
         currentAmmo = maxAmmo==0 ? Mathf.FloorToInt(Mathf.Infinity) :  maxAmmo; //ammosuz ranged ise hep ammosu var
     }
 
-    protected override void Attack()
+    public override void Attack()
     {
         base.Attack();
         currentAmmo--;

@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public abstract class Weapon : MonoBehaviour
 {
     [Header("Weapon Script")]
-    [SerializeField] protected float range;
+    [SerializeField] protected float attackRange;
     [SerializeField] private int damage;
     [SerializeField] private float attackingInterval; //sald�r�lar aras� s�re
 
@@ -19,7 +19,7 @@ public class Weapon : MonoBehaviour
 
     }
 
-    protected virtual void Attack()
+    public virtual void Attack()
     {
         PlayAudioClip(GetAttackAudioClip());
     }
