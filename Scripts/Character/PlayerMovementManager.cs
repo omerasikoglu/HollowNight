@@ -4,23 +4,28 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+/* <<SUM>>
+ * Hareketle ilgili her þey burada 
+ * Dash'ler gibi özel güçler dahil deðil
+ */
 public class PlayerMovementManager : MonoBehaviour
 {
     [SerializeField] private float movementSpeed;
-    [SerializeField] private Transform[] weapons;
 
     private InputReceiver inputReceiver;
     private Rigidbody2D rb;
     private PlayerEnergyManager energyManager;
     private Animator animator;
 
-    [Header("Test")] //test için public
+    [Header("Test")]
     [ReadOnly] public bool canMove = true;
     [ReadOnly] public bool isWalking;
-    //[ReadOnly] public bool isFacingRight = true;
-    [ReadOnly] public float facingDirection = 1;
+    [ReadOnly] public float facingDirection = 1; //1=sað, -1=sol
     [ReadOnly] public bool canFlip = true;
 
+    private Transform carryingweaponsParentTransform;
+
+    private const string WEAPONPARENT = "alive"; //silahlarý eklediðimiz yerin parentý
 
     private void Awake()
     {
@@ -28,6 +33,8 @@ public class PlayerMovementManager : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         energyManager = GetComponent<PlayerEnergyManager>();
         animator = GetComponent<Animator>();
+
+        carryingweaponsParentTransform = transform.Find(WEAPONPARENT);
     }
     private void Update()
     {
@@ -36,21 +43,28 @@ public class PlayerMovementManager : MonoBehaviour
     private void RotateCharacterAndWeaponsWithMousePosition()
     {
         Vector3 screenPoint = Camera.main.WorldToScreenPoint(transform.localPosition);
+
         if (inputReceiver.mousePosition.x < screenPoint.x)
         {
-            foreach (Transform weaponTransform in weapons)
+            
+            foreach (Transform eachChild in carryingweaponsParentTransform)
             {
-                weaponTransform.localScale = new Vector3(-1f, -1f, 1f);
+
+                eachChild.localScale = new Vector3(-1f, -1f, 1f);
 
             }
+
             transform.localScale = Vector3.one;
         }
         else
         {
-            foreach (Transform weaponTransform in weapons)
+            foreach (Transform eachChild in carryingweaponsParentTransform)
             {
-                weaponTransform.localScale = Vector3.one;
+
+                eachChild.localScale = Vector3.one;
+
             }
+            
             transform.localScale = new Vector3(-1f, 1f, 1f);
         }
 
@@ -58,9 +72,9 @@ public class PlayerMovementManager : MonoBehaviour
                                      inputReceiver.mousePosition.y - screenPoint.y);
         float angle = UtilsClass.GetAngleFromVector(offset);
 
-        foreach (Transform weaponTransform in weapons)
+        foreach (Transform eachChild in carryingweaponsParentTransform)
         {
-            weaponTransform.rotation = Quaternion.Euler(0, 0, angle);
+            eachChild.rotation = Quaternion.Euler(0, 0, angle);
         }
     }
 

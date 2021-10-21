@@ -11,7 +11,7 @@ public class HealthSystem : MonoBehaviour
     {
         public int knockbackDirection;
     }
-    private int currentHealth;
+    [ReadOnly] public int currentHealth;
     private void Awake()
     {
         currentHealth = maxHealth;
