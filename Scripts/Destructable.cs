@@ -1,18 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class Destructable : MonoBehaviour
+public class Destructable : Hittable
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public int health = 10;
 
-    // Update is called once per frame
-    void Update()
+    public int CurrentHealth { get; set; }
+    public bool Invincible { get; set; }
+
+    public event Action OnDestroyed;
+
+    protected override void Awake()
     {
-        
+        base.Awake();
+        CurrentHealth = health;
+        Invincible = false;
     }
 }

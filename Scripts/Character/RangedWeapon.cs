@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RangedWeapon : Weapon
+public abstract class RangedWeapon : Weapon
 {
+   
     [Header("Ranged Weapon Script")]
-
     [SerializeField] protected Transform firePoint;
 
     [SerializeField] private int maxAmmo;
     [SerializeField] private int projectileSpeed;
+    [SerializeField] private float projectileDisappearTime;
 
     [SerializeField] private AudioClip projectileImpactAudio;
     [SerializeField] private AudioClip weaponReloadAudio;
@@ -19,6 +20,7 @@ public class RangedWeapon : Weapon
     protected override void Awake()
     {
         base.Awake();
+        weaponDistanceType = WeaponDistanceType.Ranged;
         currentAmmo = maxAmmo==0 ? Mathf.FloorToInt(Mathf.Infinity) :  maxAmmo; //ammosuz ranged ise hep ammosu var
     }
 
@@ -27,6 +29,10 @@ public class RangedWeapon : Weapon
         base.Attack();
         currentAmmo--;
         
+    }
+    public override bool HasEnoughAmmo()
+    {
+        return currentAmmo > 0 ? true : false;
     }
     public int GetProjectileSpeed()
     {
@@ -41,9 +47,10 @@ public class RangedWeapon : Weapon
     {
         return currentAmmo;
     }
-    public bool HasEnoughAmmo()
+  
+    public float GetProjectileDisappearTime()
     {
-        return currentAmmo > 0 ? true : false;
+        return projectileDisappearTime;
     }
 
 
