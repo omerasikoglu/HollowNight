@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using DG.Tweening;
 using BehaviorDesigner;
 using System.Reflection;
+using Pixelplacement;
 
 public class Hittable : MonoBehaviour
 {
@@ -31,18 +31,20 @@ public class Hittable : MonoBehaviour
     private float baseScale;
     protected Color defaultColor = Color.white;
     private Material defaultMaterial;
-
+    
     public event Action<Vector2, Vector2> OnHit;
-
+    
     // Start is called before the first frame update
     protected virtual void Awake()
     { 
         // Find all child sprite renderers
         Transform spriteParentTransform = spriteParent != null ? spriteParent : transform;
         sprite = spriteParentTransform.GetComponentInChildren<SpriteRenderer>();
-
+        
         baseScale = transform.localScale.y;
         defaultMaterial = sprite.material;
+
+        
     }
 
     public virtual void OnAttackHit(Vector2 position, Vector2 force, int damage)
@@ -53,19 +55,19 @@ public class Hittable : MonoBehaviour
         if (hitType == HitType.Inflate)
         {
             
-            //Tween.LocalScale(transform, new Vector3(transform.localScale.x, baseScale, baseScale),
-            //    new Vector3(transform.localScale.x * 1.01f, baseScale + 0.05f, baseScale), 0.5f, 0,
-            //    Tween.EaseWobble);
+            Pixelplacement.Tween.LocalScale(transform, new Vector3(transform.localScale.x, baseScale, baseScale),
+                new Vector3(transform.localScale.x * 1.01f, baseScale + 0.05f, baseScale), 0.5f, 0,
+                Pixelplacement.Tween.EaseWobble);
         }
         else if (hitType == HitType.Push)
         {
             // Push object quickly by a small amount and return to its original position
 
-            //float hitAmount = 0.05f;
-            //Tween.Position(transform, transform.position,
-            //    transform.position + new Vector3(UnityEngine.Random.Range(-hitAmount, hitAmount),
-            //        UnityEngine.Random.Range(-hitAmount, hitAmount), 0),
-            //    0.5f, 0, Tween.EaseWobble);
+            float hitAmount = 0.05f;
+            Pixelplacement.Tween.Position(transform, transform.position,
+                transform.position + new Vector3(UnityEngine.Random.Range(-hitAmount, hitAmount),
+                    UnityEngine.Random.Range(-hitAmount, hitAmount), 0),
+                0.5f, 0, Pixelplacement.Tween.EaseWobble);
         }
         else if (hitType == HitType.Color)
         {
