@@ -10,7 +10,7 @@ public class Destructable : Hittable
     public int CurrentHealth { get; set; }
     public bool Invincible { get; set; }
 
-    public event Action OnDestroyed;
+    //public event Action OnDestroyed;
 
     protected override void Awake()
     {

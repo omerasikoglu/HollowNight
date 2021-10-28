@@ -5,14 +5,17 @@ using UnityEngine;
 
 public class EnemyAction : Action
 {
-    protected Rigidbody2D rb;
+    protected Rigidbody2D rigidbody;
     protected Animator animator;
     protected Destructable destructable;
+    [SerializeField] protected PlayerController player;
+
+    private const string ALIVE = "alive";
 
     public override void OnAwake()
     {
-        rb = GetComponent<Rigidbody2D>();
-        animator = transform.Find("alive").GetComponent<Animator>();
+        rigidbody = GetComponent<Rigidbody2D>();
+        animator = transform.Find(ALIVE).GetComponent<Animator>();
         destructable = GetComponent<Destructable>();
     }
 }
