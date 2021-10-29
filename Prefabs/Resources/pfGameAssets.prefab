@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5670498023179476409}
   - component: {fileID: 5670498023179476408}
   m_Layer: 0
-  m_Name: GameAssets
+  m_Name: pfGameAssets
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43,5 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31fffddca7eb6804bbd13cd0ed6de12a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pfEnemyBirdie: {fileID: 0}
+  pfEnemyBirdie: {fileID: 5230822327653970374, guid: 093598a831a710945923305ae3831af8, type: 3}
   pfProjectileGold: {fileID: 6927416360317162189, guid: 50c57149d02a79049b9fecc1b8b266af, type: 3}
+  pfDamagePopup: {fileID: 7052010097061580644, guid: ecdcddc2aed8fba459124ce29dc93408, type: 3}

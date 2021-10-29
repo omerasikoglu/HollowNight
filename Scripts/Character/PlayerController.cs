@@ -2,17 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Model
 {
-    // Start is called before the first frame update
-    void Start()
+    private CombatController combatManager;
+    private MovementManager movementManager;
+
+    protected sealed override void Awake()
     {
+        base.Awake();
+        combatManager = GetComponent<CombatController>();
+        movementManager = GetComponent<MovementManager>();
         
+    }
+    protected sealed override void Start()
+    {
+        base.Start();
+    }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.L)) FlashBlue();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   
 }

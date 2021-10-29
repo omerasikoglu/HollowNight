@@ -5,7 +5,7 @@ using UnityEngine;
 public class Magnet : RangedWeapon
 {
     [Header("Magnet Script")]
-    [SerializeField] private Projectile projectilePrefab;
+    [SerializeField] private Projectile pfProjectile;
 
     protected override void Awake()
     {
@@ -17,7 +17,7 @@ public class Magnet : RangedWeapon
     {
         base.Attack();
 
-        Projectile projectile = Instantiate(projectilePrefab, firePoint.transform.position, Quaternion.identity);
+        Projectile projectile = Instantiate(pfProjectile, firePoint.transform.position, Quaternion.identity);
         projectile.Init(this);
     }
     

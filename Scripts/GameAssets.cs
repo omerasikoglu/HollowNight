@@ -9,7 +9,7 @@ public class GameAssets : MonoBehaviour
     {
         get { if (instance == null)
             {
-                instance = Resources.Load<GameAssets>("GameAssets");
+                instance = Resources.Load<GameAssets>("pfGameAssets");
             }
             return instance;
         }
@@ -21,5 +21,7 @@ public class GameAssets : MonoBehaviour
     [Header("Projectiles")]
     public Transform pfProjectileGold;
 
+    [Header("Pop-ups")]
+    public Transform pfDamagePopup;
 
 }

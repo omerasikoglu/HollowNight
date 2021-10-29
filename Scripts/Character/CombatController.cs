@@ -6,7 +6,7 @@ using UnityEngine;
  * Yerden kýlýç alma. Özel güçler ekleme. Combatta yapabilceðin her þeyi ekler.
  * 
  */
-public class PlayerCombatManager : MonoBehaviour
+public class CombatController : MonoBehaviour
 {
     public event EventHandler<OnActiveWeaponTypeChangedArgs> OnActiveWeaponTypeChanged;
     public class OnActiveWeaponTypeChangedArgs : EventArgs
