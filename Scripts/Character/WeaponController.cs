@@ -12,20 +12,20 @@ using UnityEngine;
 public class WeaponController : MonoBehaviour
 {
 
-    private PlayerCombatManager combatManager;
+    private CombatController combatManager;
 
     private Weapon weapon;
 
     private void Awake()
     {
-        combatManager = GetComponent<PlayerCombatManager>();
+        combatManager = GetComponent<CombatController>();
     }
     private void Start()
     {
         combatManager.OnActiveWeaponTypeChanged += CombatManager_OnActiveWeaponTypeIsChanged;
     }
 
-    private void CombatManager_OnActiveWeaponTypeIsChanged(object sender, PlayerCombatManager.OnActiveWeaponTypeChangedArgs e)
+    private void CombatManager_OnActiveWeaponTypeIsChanged(object sender, CombatController.OnActiveWeaponTypeChangedArgs e)
     {
         weapon = e.weapon;
     }

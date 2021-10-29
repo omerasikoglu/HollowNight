@@ -11,7 +11,7 @@ public class MaterialTintColor : MonoBehaviour
     private void Awake()
     {
         materialTintColor = new Color(1, 0, 0, 0);
-        SetMaterial(GetComponent<SpriteRenderer>().material);
+        SetMaterial(transform.Find(Datalarimiz.ALIVE).GetComponent<SpriteRenderer>().material);
     }
     private void Update()
     {

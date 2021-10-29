@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    //TODO AYARLA
+    public static Projectile Create(Vector3 creatingPosition, Vector3 direction)
+    {
+        Transform projectileTransform = Instantiate(GameAssets.Instance.pfProjectileGold, Vector3.zero, Quaternion.identity);
+
+        Projectile projectile = projectileTransform.GetComponent<Projectile>();
+        return projectile;
+    }
+
+
     private int damage;
     private float projectileDisappearTime;
     private Rigidbody2D rb;
@@ -29,11 +39,12 @@ public class Projectile : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Destructable destructable = collision.GetComponent<Destructable>();
-        if (destructable != null)
+        HealthManager healthManager = collision.GetComponent<HealthManager>();
+        if (healthManager != null)
         {
             //düþmana vurunca obje yok olsun
-            destructable.GetComponent<HealthSystem>().Damage(new AttackDetails { damageAmount = damage, position = this.transform.position });
+            healthManager.GetComponent<HealthManager>().Hurt(
+                new AttackDetails { damageAmount = damage, position = this.transform.position, knockbackStrength = 1f });
             AudioSource.PlayClipAtPoint(projectileImpactAudio, transform.position);
             Destroy(gameObject);
 

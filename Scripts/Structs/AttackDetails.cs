@@ -9,8 +9,7 @@ public struct AttackDetails
     //public float movementSpeed;
     public int damageAmount;
     
-    //public float knockbackStrength;
-    public Vector2 position;
-    //public Vector2 knockbackAngle;
+    public Vector2 position; //ataðýn geldiði yön ve konumu için
+    public float knockbackStrength; //geri tepme þiddeti için
 
 }

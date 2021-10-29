@@ -7,15 +7,15 @@ using UnityEngine;
 /* <<SUM>>
  * Hareketle ilgili her þey burada 
  * Dash'ler gibi özel güçler dahil deðil
+ * Animasyonlar dahil deðil
  */
-public class PlayerMovementManager : MonoBehaviour
+public class MovementManager : MonoBehaviour
 {
     [SerializeField] private float movementSpeed;
 
     private InputReceiver inputReceiver;
-    private Rigidbody2D rb;
+    private Rigidbody2D rigidbody;
     private PlayerEnergyManager energyManager;
-    private Animator animator;
 
     [Header("Test")]
     [ReadOnly] public bool canMove = true;
@@ -23,18 +23,15 @@ public class PlayerMovementManager : MonoBehaviour
     [ReadOnly] public float facingDirection = 1; //1=sað, -1=sol
     [ReadOnly] public bool canFlip = true;
 
-    private Transform carryingweaponsParentTransform;
-
-    private const string WEAPONPARENT = "alive"; //silahlarý eklediðimiz yerin parentý
+    private Transform carryingWeaponsRootTransform;
 
     private void Awake()
     {
         inputReceiver = GetComponent<InputReceiver>();
-        rb = GetComponent<Rigidbody2D>();
+        rigidbody = GetComponent<Rigidbody2D>();
         energyManager = GetComponent<PlayerEnergyManager>();
-        animator = GetComponent<Animator>();
 
-        carryingweaponsParentTransform = transform.Find(WEAPONPARENT);
+        carryingWeaponsRootTransform = transform.Find(Datalarimiz.ALIVE);
     }
     private void Update()
     {
@@ -47,7 +44,7 @@ public class PlayerMovementManager : MonoBehaviour
         if (inputReceiver.mousePosition.x < screenPoint.x)
         {
             
-            foreach (Transform eachChild in carryingweaponsParentTransform)
+            foreach (Transform eachChild in carryingWeaponsRootTransform)
             {
 
                 eachChild.localScale = new Vector3(-1f, -1f, 1f);
@@ -58,7 +55,7 @@ public class PlayerMovementManager : MonoBehaviour
         }
         else
         {
-            foreach (Transform eachChild in carryingweaponsParentTransform)
+            foreach (Transform eachChild in carryingWeaponsRootTransform)
             {
 
                 eachChild.localScale = Vector3.one;
@@ -72,7 +69,7 @@ public class PlayerMovementManager : MonoBehaviour
                                      inputReceiver.mousePosition.y - screenPoint.y);
         float angle = UtilsClass.GetAngleFromVector(offset);
 
-        foreach (Transform eachChild in carryingweaponsParentTransform)
+        foreach (Transform eachChild in carryingWeaponsRootTransform)
         {
             eachChild.rotation = Quaternion.Euler(0, 0, angle);
         }
@@ -85,7 +82,7 @@ public class PlayerMovementManager : MonoBehaviour
 
     private void ApplyMovement()
     {
-        rb.velocity = new Vector2(movementSpeed * inputReceiver.HorizontalInput, rb.velocity.y);
+        rigidbody.velocity = new Vector2(movementSpeed * inputReceiver.HorizontalInput, rigidbody.velocity.y);
     }
 
 
