@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Magnet : RangedWeapon
 {
-    [Header("Magnet Script")]
-    [SerializeField] private Projectile pfProjectile;
+    //[Header("Magnet Script")]
+    //private Transform pfProjectile;
 
     protected override void Awake()
     {
@@ -17,8 +17,8 @@ public class Magnet : RangedWeapon
     {
         base.Attack();
 
-        Projectile projectile = Instantiate(pfProjectile, firePoint.transform.position, Quaternion.identity);
-        projectile.Init(this);
+        Projectile.Create(this);
+        //TODO: switch case'le taktýðýn merminin türüne göre create'lediði mermi deðiþsin
     }
     
 }
