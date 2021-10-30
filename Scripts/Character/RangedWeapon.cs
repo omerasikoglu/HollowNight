@@ -52,6 +52,10 @@ public abstract class RangedWeapon : Weapon
     {
         return projectileDisappearTime;
     }
+    public Vector3 GetFirePoint()
+    {
+        return firePoint.transform.position;
+    }
 
 
 }

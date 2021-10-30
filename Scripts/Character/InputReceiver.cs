@@ -19,6 +19,8 @@ public class InputReceiver : MonoBehaviour
 
     private const string HORIZONTAL = "Horizontal";
     private const string VERTICAL = "Vertical";
+    private const string MOUSE_X = "Mouse X";
+    private const string MOUSE_Y = "Mouse Y";
 
     public bool IsAttacking { get; private set; }
     public bool IsJumping { get; private set; }
@@ -31,9 +33,13 @@ public class InputReceiver : MonoBehaviour
     public bool IsScrollingUp { get; private set; }
     public bool IsPressOpenMapButton { get; private set; }
     public bool IsPressSpecialPowerButton { get; private set; }
+    public bool IsClickLeftMouseButton { get; private set; }
+    public bool IsClickRightMouseButton { get; private set; }
 
     public float HorizontalInput { get; private set; }
     public float VerticalInput { get; private set; }
+    public float MouseInputX { get; private set; }
+    public float MouseInputY { get; private set; }
 
     private void Update()
     {
@@ -51,6 +57,8 @@ public class InputReceiver : MonoBehaviour
     {
         HorizontalInput = Input.GetAxis(HORIZONTAL);
         VerticalInput = Input.GetAxis(VERTICAL);
+        MouseInputX = Input.GetAxis(MOUSE_X);
+        MouseInputY = Input.GetAxis(MOUSE_Y);
     }
     private void ReceiveButtonsInput()
     {
@@ -65,5 +73,8 @@ public class InputReceiver : MonoBehaviour
         IsScrollingUp = Input.mouseScrollDelta.y > 0;
         IsPressOpenMapButton = Input.GetKeyDown(mapButton);
         IsPressSpecialPowerButton = Input.GetKeyDown(specialPowerButton);
+        IsClickLeftMouseButton = Input.GetMouseButtonDown(0);
+        IsClickRightMouseButton = Input.GetMouseButtonDown(1);
+
     }
 }

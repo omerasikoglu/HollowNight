@@ -5,11 +5,12 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     //TODO AYARLA
-    public static Projectile Create(Vector3 creatingPosition, Vector3 direction)
+    public static Projectile Create(RangedWeapon weapon)
     {
-        Transform projectileTransform = Instantiate(GameAssets.Instance.pfProjectileGold, Vector3.zero, Quaternion.identity);
+        Transform projectileTransform = Instantiate(GameAssets.Instance.pfProjectileGold, weapon.GetFirePoint(), Quaternion.identity);
 
         Projectile projectile = projectileTransform.GetComponent<Projectile>();
+        projectile.Setup(weapon);
         return projectile;
     }
 
@@ -29,12 +30,12 @@ public class Projectile : MonoBehaviour
         projectileDisappearTime -= Time.deltaTime;
         if (projectileDisappearTime < 0f) Destroy(gameObject);
     }
-    public void Init(RangedWeapon weapon)
+    public void Setup(RangedWeapon weapon)
     {
         this.damage = weapon.GetWeaponDamage();
         projectileDisappearTime = weapon.GetProjectileDisappearTime();
         this.projectileImpactAudio = weapon.GetImpactAudio();
-        rb.velocity = UtilsClass.GetMouseDirection(weapon.transform) * weapon.GetProjectileSpeed();
+        rb.velocity = UtilsClass.GetNormalizeMouseDirection(weapon.transform) * weapon.GetProjectileSpeed();
 
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -46,6 +47,7 @@ public class Projectile : MonoBehaviour
             healthManager.GetComponent<HealthManager>().Hurt(
                 new AttackDetails { damageAmount = damage, position = this.transform.position, knockbackStrength = 1f });
             AudioSource.PlayClipAtPoint(projectileImpactAudio, transform.position);
+            DamagePopup.Create(this.transform.position, damage, Random.Range(0, 2) % 2 == 0);
             Destroy(gameObject);
 
 

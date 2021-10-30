@@ -66,6 +66,8 @@ public class CombatController : MonoBehaviour
         HandleSwitchingWeaponsWithMouseScroll();
         HandleSwitchingWeaponsWithAlphaNumbers();
 
+        HandleRightClick();
+
         /*  TODO
          *   Tuttuðumuz silaha göre girdiðimiz inputlar, VFXler, animasyonlar da
          *  göre deðiþir
@@ -88,6 +90,15 @@ public class CombatController : MonoBehaviour
         }
 
 
+    }
+
+    private void HandleRightClick()
+    {
+        if (inputReceiver.IsClickRightMouseButton)
+        {
+            bool isCritical = UnityEngine.Random.Range(0, 100) > 70;
+            DamagePopup.Create(UtilsClass.GetMouseWorldPosition(), 2990, isCritical); 
+        }
     }
 
     private void HandleSwitchingWeaponsWithAlphaNumbers()
