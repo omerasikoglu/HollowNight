@@ -5,9 +5,12 @@ using UnityEditor;
 using UnityEngine;
 
 /* <<SUM>>
+ * TODO: Vent sistemini buraya ekle
+ * 
  * Hareketle ilgili her þey burada 
  * Dash'ler gibi özel güçler dahil deðil
  * Animasyonlar dahil deðil
+ * YOUR KNOCKBACK dahil
  */
 public class MovementManager : MonoBehaviour
 {
@@ -15,6 +18,7 @@ public class MovementManager : MonoBehaviour
 
     private InputReceiver inputReceiver;
     private Rigidbody2D rigidbody;
+    private HealthManager healthManager;
     private PlayerEnergyManager energyManager;
 
     [Header("Test")]
@@ -33,6 +37,7 @@ public class MovementManager : MonoBehaviour
 
         carryingWeaponsRootTransform = transform.Find(Datalarimiz.ALIVE);
     }
+
     private void Update()
     {
         RotateCharacterAndWeaponsWithMousePosition();
@@ -85,25 +90,21 @@ public class MovementManager : MonoBehaviour
         rigidbody.velocity = new Vector2(movementSpeed * inputReceiver.HorizontalInput, rigidbody.velocity.y);
     }
 
-
-
-
-    //animator için public
+   
     public void ChangeFlipEnability()
     {
+        //animator için public
         canFlip = !canFlip;
     }
     public float GetFacingDirection()
     {
         return facingDirection;
     }
-
     private void CheckSpriteDirection()
     {
         if (canFlip && (facingDirection > 0 && inputReceiver.HorizontalInput < 0) ||
             (facingDirection < 0 && inputReceiver.HorizontalInput > 0)) Flip(transform);
     }
-
     public void Flip(Transform transform)
     {
         facingDirection = inputReceiver.HorizontalInput;

@@ -76,7 +76,7 @@ public class CombatController : MonoBehaviour
         switch (holdWeapon.weaponType)
         {
             case Weapon.WeaponType.Null:
-                if (Input.GetKeyDown(KeyCode.V)) CinemachineShake.Instance.ShakeCamera(2f, 2f);
+                if (Input.GetKeyDown(KeyCode.V)) CinemachineShake.Instance.ShakeCamera(2f, 2f); //test
                 break;
             case Weapon.WeaponType.Bow:
                 break;

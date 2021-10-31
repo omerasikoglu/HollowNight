@@ -10,6 +10,6 @@ public struct AttackDetails
     public int damageAmount;
     
     public Vector2 position; //ataðýn geldiði yön ve konumu için
-    public float knockbackStrength; //geri tepme þiddeti için
+    public float knockbackPowerX; //geri tepme þiddeti için
 
 }
