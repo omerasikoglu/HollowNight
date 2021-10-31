@@ -5,6 +5,8 @@ public class DamagePopup : MonoBehaviour
 {
     public static DamagePopup Create(Vector3 createPosition, int damageAmount, bool isCriticalHit)
     {
+        GameObject a, b;
+
         Transform damagePopupTransform = Instantiate(GameAssets.Instance.pfDamagePopup, createPosition, Quaternion.identity);
 
         DamagePopup damagePopup = damagePopupTransform.GetComponent<DamagePopup>();

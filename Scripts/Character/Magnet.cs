@@ -16,7 +16,7 @@ public class Magnet : RangedWeapon
     public override void Attack()
     {
         base.Attack();
-
+        
         Projectile.Create(this);
         //TODO: switch case'le taktýðýn merminin türüne göre create'lediði mermi deðiþsin
     }

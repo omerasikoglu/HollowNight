@@ -45,7 +45,7 @@ public class Projectile : MonoBehaviour
         {
             //düþmana vurunca obje yok olsun
             healthManager.GetComponent<HealthManager>().Hurt(
-                new AttackDetails { damageAmount = damage, position = this.transform.position, knockbackStrength = 1f });
+                new AttackDetails { damageAmount = damage, position = this.transform.position, knockbackPowerX = 1f });
             AudioSource.PlayClipAtPoint(projectileImpactAudio, transform.position);
             DamagePopup.Create(this.transform.position, damage, Random.Range(0, 2) % 2 == 0);
             Destroy(gameObject);

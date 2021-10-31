@@ -8,16 +8,21 @@ public class Hazard : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        CheckCollision(other.gameObject);
+        CheckCollision(other);
     }
 
     private void OnCollisionStay2D(Collision2D other)
     {
-        CheckCollision(other.gameObject);
+        //CheckCollision(other);
     }
 
-    private void CheckCollision(GameObject collider)
+    private void CheckCollision(Collider2D collision)
     {
+        HealthManager healthManager = collision.GetComponent<HealthManager>();
+        if (!healthManager)
+        {
+            
+        }
         //if (collider.CompareTag("Player"))
         //{
         //    var healthSystem = PlayerController.Instance;

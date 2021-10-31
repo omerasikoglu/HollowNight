@@ -18,10 +18,10 @@ public class PlayerController : Model
     {
         base.Start();
     }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.L)) FlashBlue();
-    }
 
-   
+    protected override void Update()
+    {
+        base.Update();
+        if (Input.GetKeyDown(KeyCode.L)) FlashBlue(); //test
+    }
 }

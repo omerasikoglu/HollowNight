@@ -17,4 +17,9 @@ public class EnemyManager : Model
     {
         base.Start();
     }
+
+    protected override void Update()
+    {
+        base.Update();
+    }
 }

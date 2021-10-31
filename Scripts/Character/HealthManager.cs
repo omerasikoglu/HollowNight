@@ -22,6 +22,7 @@ public class HealthManager : MonoBehaviour
     public class OnDamagedEventArgs : EventArgs
     {
         public int knockbackDirection;
+        public float knockbackPowerX;
     }
     public class OnStunnedEventArgs : EventArgs
     {
@@ -30,7 +31,7 @@ public class HealthManager : MonoBehaviour
 
     private void Awake()
     {
-        currentHealth = maxHealth; 
+        currentHealth = maxHealth;
     }
 
     private void Update()
@@ -44,13 +45,14 @@ public class HealthManager : MonoBehaviour
     {
         //vuran soldan vuruyor, vurulan saða knockback'lencekse 1
         int direction = attackDetails.position.x < transform.position.x ? 1 : -1;
+        float knockbackPowerX = attackDetails.knockbackPowerX;
 
         if (isProtectionOver)
         {
             currentHealth -= attackDetails.damageAmount;
             currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
-            OnDamaged?.Invoke(this, new OnDamagedEventArgs { knockbackDirection = direction });
+            OnDamaged?.Invoke(this, new OnDamagedEventArgs { knockbackDirection = direction, knockbackPowerX = knockbackPowerX });
             if (currentHealth <= 0)
             {
                 OnKilled?.Invoke(this, EventArgs.Empty);
