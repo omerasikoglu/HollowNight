@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D),typeof(SpriteRenderer), typeof(HealthManager))]
+[RequireComponent(typeof(Rigidbody2D), typeof(SpriteRenderer), typeof(HealthManager))]
 public abstract class Model : MonoBehaviour
 {
     protected Rigidbody2D rigidbody;
@@ -12,9 +12,11 @@ public abstract class Model : MonoBehaviour
     protected MaterialTintColor materialTintColor;
 
 
+
+
     #region Your Knockback
 
-    private float knockbackSpeedX = 10f;
+    //private float knockbackSpeedX = 10f;
     //private float knockbackDeathSpeedX = 15f;
     private float knockbackSpeedY = 2f;
     //private float knockbackDeathSpeedY = 4f;
@@ -34,25 +36,25 @@ public abstract class Model : MonoBehaviour
         healthManager = GetComponent<HealthManager>();
         materialTintColor = GetComponent<MaterialTintColor>();
 
-       
+
     }
     protected virtual void Start()
     {
         healthManager.OnDamaged += HealthManager_OnDamaged;
         healthManager.OnKilled += HealthManager_OnKilled;
 
-        
+
 
     }
     protected virtual void Update()
     {
         CheckKnockback();
     }
-    private void Knockback(int directionX) //düþman soldan vurunca direction 1 oluyor
+    private void Knockback(int directionX, float knockbackpower = 10f) //düþman soldan vurunca direction 1 oluyor
     {
         isKnockbacking = true;
         knockbackStartTime = Time.time;
-        rigidbody.velocity = new Vector2(directionX * knockbackSpeedX, knockbackSpeedY);
+        rigidbody.velocity = new Vector2(directionX * knockbackpower, knockbackSpeedY);
 
     }
     private void CheckKnockback()
@@ -70,7 +72,7 @@ public abstract class Model : MonoBehaviour
     }
     private void HealthManager_OnDamaged(object sender, HealthManager.OnDamagedEventArgs e)
     {
-        Knockback(e.knockbackDirection);
+        Knockback(e.knockbackDirection, e.knockbackPowerX);
         FlashYellow();
     }
 
@@ -90,6 +92,10 @@ public abstract class Model : MonoBehaviour
     private void FlashYellow()
     {
         materialTintColor.SetTintColor(new Color(255, 255, 65, 1));
-    } 
+    }
+    private void FlashWhite()
+    {
+        materialTintColor.SetTintColor(new Color(255, 255, 255, 1));
+    }
     #endregion
 }

@@ -4,18 +4,16 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    //TODO AYARLA
-    public static Projectile Create(RangedWeapon weapon)
+    public static Projectile Create(RangedWeapon rangedWeapon)
     {
-        Transform projectileTransform = Instantiate(GameAssets.Instance.pfProjectileGold, weapon.GetFirePoint(), Quaternion.identity);
+        Transform projectileTransform = Instantiate(GameAssets.Instance.pfProjectileGold, rangedWeapon.GetFirePoint(), Quaternion.identity);
 
         Projectile projectile = projectileTransform.GetComponent<Projectile>();
-        projectile.Setup(weapon);
+        projectile.Setup(rangedWeapon);
         return projectile;
     }
 
-
-    private int damage;
+    private int totalDamage;
     private float projectileDisappearTime;
     private Rigidbody2D rb;
     private AudioClip projectileImpactAudio;
@@ -30,28 +28,32 @@ public class Projectile : MonoBehaviour
         projectileDisappearTime -= Time.deltaTime;
         if (projectileDisappearTime < 0f) Destroy(gameObject);
     }
-    public void Setup(RangedWeapon weapon)
+    public void Setup(RangedWeapon rangedWeapon)
     {
-        this.damage = weapon.GetWeaponDamage();
-        projectileDisappearTime = weapon.GetProjectileDisappearTime();
-        this.projectileImpactAudio = weapon.GetImpactAudio();
-        rb.velocity = UtilsClass.GetNormalizeMouseDirection(weapon.transform) * weapon.GetProjectileSpeed();
+        this.totalDamage = rangedWeapon.GetTotalWeaponDamage();
+        projectileDisappearTime = rangedWeapon.GetProjectileDisappearTime();
+        this.projectileImpactAudio = rangedWeapon.GetImpactAudio();
+        rb.velocity = UtilsClass.GetNormalizeMouseDirection(rangedWeapon.transform) * rangedWeapon.GetProjectileSpeed();
 
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        HealthManager healthManager = collision.GetComponent<HealthManager>();
+        HealthManager healthManager = collision.gameObject.GetComponent<HealthManager>();
         if (healthManager != null)
         {
             //düþmana vurunca obje yok olsun
-            healthManager.GetComponent<HealthManager>().Hurt(
-                new AttackDetails { damageAmount = damage, position = this.transform.position, knockbackPowerX = 1f });
+            healthManager.Hurt(
+                new AttackDetails
+                {
+                    damageAmount = totalDamage,
+                    position = this.transform.position,
+                    knockbackPowerX = 1f,
+                    isCritical = Random.Range(0, 2) % 2 == 0
+                });
             AudioSource.PlayClipAtPoint(projectileImpactAudio, transform.position);
-            DamagePopup.Create(this.transform.position, damage, Random.Range(0, 2) % 2 == 0);
+            //DamagePopup.Create(this.transform.position, totalDamage, Random.Range(0, 2) % 2 == 0,
+            //                    healthManager.CheckIsProtectionActive());
             Destroy(gameObject);
-
-
         }
     }
-
 }

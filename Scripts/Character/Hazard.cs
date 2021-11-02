@@ -1,39 +1,103 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Hazard : MonoBehaviour
 {
-    [SerializeField] private int damage = 1;
+    /*
+     * Hasarý verecek olanda takýlý
+     * 
+     */
+    [SerializeField] private int hazardDamage = 1;
 
-    private void OnTriggerStay2D(Collider2D other)
+    [ReadOnly] public float damageIntervalTimer = 1f;
+    [ReadOnly] public float damageIntervalDuration = 1f;
+    //private bool canTakeDamage => damageIntervalTimer <= 0f;
+    [ReadOnly] public bool canTakeDamage;
+
+    private void Start()
     {
-        CheckCollision(other);
+        canTakeDamage = true;
+
+        damageIntervalTimer = 1f; damageIntervalDuration = 1f;
+    }
+    private void Update()
+    {
+        DamageIntervalTimer();
+
     }
 
-    private void OnCollisionStay2D(Collision2D other)
+    private void DamageIntervalTimer()
     {
-        //CheckCollision(other);
-    }
+        canTakeDamage = damageIntervalTimer <= 0;
 
-    private void CheckCollision(Collider2D collision)
-    {
-        HealthManager healthManager = collision.GetComponent<HealthManager>();
-        if (!healthManager)
+        if (damageIntervalTimer > 0)
         {
-            
+            damageIntervalTimer -= Time.deltaTime;
         }
-        //if (collider.CompareTag("Player"))
-        //{
-        //    var healthSystem = PlayerController.Instance;
-        //    if (!healthSystem.CanBeHit) return;
-
-        //    var recoilDirection = (collider.transform.position - transform.position).normalized;
-        //    float multiplier = recoilDirection.y < 0 ? 1.0f : 500.0f;
-        //    Vector2 recoilForce = recoilDirection * multiplier;
-
-        //    healthSystem.Hurt(damage, recoilForce, killRecoil: false);
-        //}
-        //}
     }
+
+
+    private void OnTriggerStay2D(Collider2D collider)
+    {
+        if (canTakeDamage)
+        {
+            CheckCollider(collider.gameObject);
+            
+
+        }
+    }
+    //private void OnCollisionStay2D(Collision2D collision)
+    //{
+    //    if (canTakeDamage)
+    //    {
+    //        CheckCollider(collider.gameObject);
+    //        damageIntervalTimer += damageIntervalDuration;
+
+    //    }
+    //}
+
+    private void CheckCollider(GameObject collider)
+    {
+        HealthManager healthManager = collider.gameObject.GetComponent<HealthManager>();
+
+        if (healthManager != null)
+        {
+
+            healthManager.Hurt(new AttackDetails
+            {
+                damageAmount = hazardDamage,
+                position = transform.position,
+                knockbackPowerX = 150f,
+                isCritical = false
+            });
+            damageIntervalTimer = damageIntervalDuration;
+        }
+    }
+
+    //private void OnCollisionStay2D(Collision2D collision)
+    //{
+    //    CheckCollision(collision);
+    //}
+    //private void CheckCollision(Collision2D collision)
+    //{
+    //    HealthManager healthManager = collision.gameObject.GetComponent<HealthManager>();
+    //    if (healthManager != null)
+    //    {
+
+    //        //Vector2 knockbackDirection = (collision.transform.position - transform.position).normalized;
+    //        //float multiplier = knockbackDirection.y < 0 ? 1.0f : 500.0f;
+    //        //Vector2 knockbackStrength = knockbackDirection * multiplier;
+
+    //        healthManager.Hurt(new AttackDetails
+    //        {
+    //            damageAmount = hazardDamage,
+    //            position = collision.transform.position,
+    //            knockbackPowerX = 10f,
+    //            isCritical = false
+    //        });
+    //        //DamagePopup.Create(transform.position, hazardDamage, true, healthManager.CheckIsProtectionActive());
+
+    //    }
+
+    //}
+
 }

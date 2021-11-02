@@ -12,14 +12,18 @@ public abstract class Weapon : MonoBehaviour
     {
         Null, Bow, Gun, Magnet
     }
-
+    public enum BulletType
+    {
+        Null, Projectile, Coin
+    }
     [Header("Weapon Script")]
     [ReadOnly] public WeaponDistanceType weaponDistanceType;
     [ReadOnly] public WeaponType weaponType;
-    [SerializeField] protected string weaponName;
-    [SerializeField] protected float attackRange;
-    [SerializeField] private int damage;
-    [SerializeField] private float attackingInterval; //sald�r�lar aras� s�re
+    [ReadOnly] public BulletType bulletType;
+
+    [ReadOnly] public string weaponName;
+    [ReadOnly] public float attackRange;
+    [ReadOnly] public float attackingInterval; //sald�r�lar aras� s�re
 
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip attackAudio;
@@ -37,7 +41,7 @@ public abstract class Weapon : MonoBehaviour
     {
         PlayAudioClip(GetAttackAudioClip());
     }
-    protected virtual void Reload()
+    public virtual void Reload()
     {
 
     }
@@ -52,10 +56,7 @@ public abstract class Weapon : MonoBehaviour
         audioSource.Stop();
         audioSource.Play();
     }
-    public int GetWeaponDamage()
-    {
-        return damage;
-    }
+
     public float GetShootingInterval()
     {
         return attackingInterval;
@@ -64,5 +65,23 @@ public abstract class Weapon : MonoBehaviour
     {
         return weaponName;
     }
-   
+    public int GetTotalWeaponDamage()
+    {
+        return GetWeaponDamage() + GetBulletDamage();
+    }
+    public int GetWeaponDamage() => weaponType switch
+    {
+        WeaponType.Magnet => 2,
+        WeaponType.Bow => 1,
+        WeaponType.Null => throw new System.NotImplementedException(),
+        WeaponType.Gun => throw new System.NotImplementedException(),
+        _ => 0,
+    };
+
+    public int GetBulletDamage() => bulletType switch
+    {
+        BulletType.Projectile => 1,
+        BulletType.Coin => 2,
+        _ => 1
+    };
 }

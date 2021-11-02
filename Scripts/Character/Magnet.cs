@@ -4,21 +4,40 @@ using UnityEngine;
 
 public class Magnet : RangedWeapon
 {
-    //[Header("Magnet Script")]
-    //private Transform pfProjectile;
+    [Header("Magnet Script")]
+    [SerializeField] private BulletType holdingBulletType;
+    [ReadOnly] public int weaponDamage; //totalDamage = weaponDmg + bulletDmg
+    [ReadOnly] public int bulletDamage;
 
-    protected override void Awake()
+    protected sealed override void Awake()
     {
         base.Awake();
         weaponType = WeaponType.Magnet;
+        bulletType = holdingBulletType;
+
+        weaponDamage = GetWeaponDamage();
+        bulletDamage = GetBulletDamage();
+        projectileSpeed = 5f;
 
     }
-    public override void Attack()
+
+    public sealed override void Attack()
     {
         base.Attack();
-        
-        Projectile.Create(this);
-        //TODO: switch case'le taktýðýn merminin türüne göre create'lediði mermi deðiþsin
+
+        switch (bulletType)
+        {
+            case BulletType.Projectile:
+                Projectile.Create(this);
+                break;
+            case BulletType.Coin:
+                Projectile.Create(this);
+                break;
+            case BulletType.Null:
+                break;
+            default:
+                break;
+        }
     }
-    
+
 }

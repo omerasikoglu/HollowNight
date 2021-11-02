@@ -3,16 +3,15 @@ using TMPro;
 
 public class DamagePopup : MonoBehaviour
 {
-    public static DamagePopup Create(Vector3 createPosition, int damageAmount, bool isCriticalHit)
+    public static DamagePopup Create(Vector3 createPosition, int damageAmount, bool isCriticalHit, bool isBlocked = false)
     {
-        GameObject a, b;
-
         Transform damagePopupTransform = Instantiate(GameAssets.Instance.pfDamagePopup, createPosition, Quaternion.identity);
 
         DamagePopup damagePopup = damagePopupTransform.GetComponent<DamagePopup>();
-        damagePopup.Setup(damageAmount, isCriticalHit);
+        damagePopup.Setup(damageAmount, isCriticalHit, isBlocked);
         return damagePopup;
     }
+    
     private static int sortingOrder;
 
     private TextMeshPro textMesh;
@@ -23,6 +22,11 @@ public class DamagePopup : MonoBehaviour
     [ReadOnly] public float textMoveSpeedY = 0.5f;
     [ReadOnly] public float textDisappearSpeed = 3f;
 
+    //Frame Optimisation => Pixel art hissini artýrýr text gösteriminde stop motion görüntü elde edersin
+    private float frameIntervalTimer = 0.0f;
+    private float frameIntervalDuration = 0.034f; // 1saniye / 0.034 = 30fps
+    private bool canShowFrame => frameIntervalTimer <= 0f;
+
     private const float DISAPPEAR_TIMER_MAX = 1f;
 
     private void Awake()
@@ -31,45 +35,74 @@ public class DamagePopup : MonoBehaviour
     }
     private void Update()
     {
-        transform.position += moveVector * Time.deltaTime;
-        moveVector -= moveVector * 5f * Time.deltaTime;
+        Timers();
+        ShowText();
 
-        disappearTimer -= Time.deltaTime;
+    }
 
-        //popup'ýn ilk yarýsý
-        if (disappearTimer >= DISAPPEAR_TIMER_MAX * 0.5f)
+    private void Timers()
+    {
+        if (frameIntervalTimer > 0)
         {
-            float increaseScaleAmount = 0.5f;
-            transform.localScale += Vector3.one * increaseScaleAmount * Time.deltaTime;
-        }
-        //popup'ýn son yarýsý
-        else
-        {
-            float decreaseScaleAmount = 0.5f;
-            transform.localScale -= Vector3.one * decreaseScaleAmount * Time.deltaTime;
-
-        }
-        if (disappearTimer <= 0)
-        {
-            textColor.a -= textDisappearSpeed * Time.deltaTime;
-            textMesh.color = textColor;
-
-            if (textColor.a <= 0) Destroy(gameObject);
+            frameIntervalTimer -= Time.deltaTime;
         }
     }
-    public void Setup(int damageAmount, bool isCriticalHit)
+
+    private void ShowText()
     {
-        if (isCriticalHit)
+        if (canShowFrame)
         {
-            textMesh.SetText("<b>" + damageAmount.ToString() + "</b>");
-            textMesh.fontSize = 20;
-            textColor = UtilsClass.GetColorFromString("FF2B00");
+            transform.position += moveVector * Time.deltaTime;
+            moveVector -= moveVector * 5f * Time.deltaTime;
+
+            disappearTimer -= Time.deltaTime;
+
+            //popup'ýn ilk yarýsý
+            if (disappearTimer >= DISAPPEAR_TIMER_MAX * 0.5f)
+            {
+                float increaseScaleAmount = 0.5f;
+                transform.localScale += Vector3.one * increaseScaleAmount * Time.deltaTime;
+            }
+            //popup'ýn son yarýsý
+            else
+            {
+                float decreaseScaleAmount = 0.5f;
+                transform.localScale -= Vector3.one * decreaseScaleAmount * Time.deltaTime;
+
+            }
+            if (disappearTimer <= 0)
+            {
+                textColor.a -= textDisappearSpeed * Time.deltaTime;
+                textMesh.color = textColor;
+
+                if (textColor.a <= 0) Destroy(gameObject);
+            }
+            frameIntervalTimer += frameIntervalDuration;
+        }
+    }
+
+    public void Setup(int damageAmount, bool isCriticalHit, bool isBlocked)
+    {
+        if (isBlocked)
+        {
+            textMesh.SetText("<b> 0! </b>");
+            textMesh.fontSize = 40;
+            textColor = UtilsClass.GetColorFromString("FFFFFF");
         }
         else
         {
-            textMesh.SetText(damageAmount.ToString());
-            textMesh.fontSize = 16;
-            textColor = UtilsClass.GetColorFromString("FFC500");
+            if (isCriticalHit)
+            {
+                textMesh.SetText("<b>" + damageAmount.ToString() + "</b>");
+                textMesh.fontSize = 26;
+                textColor = UtilsClass.GetColorFromString("FF2B00"); //red
+            }
+            else
+            {
+                textMesh.SetText(damageAmount.ToString());
+                textMesh.fontSize = 16;
+                textColor = UtilsClass.GetColorFromString("DDAD0D"); //yellow
+            }
         }
         textMesh.color = textColor;
         disappearTimer = DISAPPEAR_TIMER_MAX;
@@ -79,7 +112,7 @@ public class DamagePopup : MonoBehaviour
         textMesh.sortingOrder = sortingOrder;
 
         //yazý çýktýðý yerden hafifçe saða ya da sola kaysýn
-        int attackDirection = UtilsClass.GetMouseViewportPosition().x >= 0.5f ? 1 : -1;
+        int attackDirection = UtilsClass.GetScreenToViewportPosition().x >= 0.5f ? 1 : -1;
         moveVector = new Vector3(attackDirection, 1) * 10f;
 
 
