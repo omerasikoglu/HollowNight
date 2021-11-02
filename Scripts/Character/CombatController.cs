@@ -20,7 +20,7 @@ public class CombatController : MonoBehaviour
     private WeaponListSO weaponList; //tüm weapon datasý
     private Dictionary<Weapon, string> weaponDic;
 
-    private Weapon holdWeapon; //o an elimizde tuttuðumuz weapon
+    private Weapon holdingWeapon; //o an elimizde tuttuðumuz weapon
 
     private InputReceiver inputReceiver;
     private PlayerEnergyManager energyManager;
@@ -48,17 +48,17 @@ public class CombatController : MonoBehaviour
     private void Start()
     {
         SetActiveWeapon();
-        OnActiveWeaponTypeChanged?.Invoke(this, new OnActiveWeaponTypeChangedArgs { weapon = holdWeapon });
+        OnActiveWeaponTypeChanged?.Invoke(this, new OnActiveWeaponTypeChangedArgs { weapon = holdingWeapon });
     }
 
     private void SetActiveWeapon()
     {
-        holdWeapon = holdingWeaponsArray[currentWeaponIndex];
+        holdingWeapon = holdingWeaponsArray[currentWeaponIndex];
         foreach (Weapon weapon in holdingWeaponsArray)
         {
             weapon.gameObject.SetActive(false);
         }
-        holdWeapon.gameObject.SetActive(true);
+        holdingWeapon.gameObject.SetActive(true);
     }
 
     private void Update()
@@ -68,12 +68,16 @@ public class CombatController : MonoBehaviour
 
         HandleRightClick();
 
+        if (holdingWeapon.weaponDistanceType == Weapon.WeaponDistanceType.Ranged)
+        {
+
+        }
         /*  TODO
          *   Tuttuðumuz silaha göre girdiðimiz inputlar, VFXler, animasyonlar da
          *  göre deðiþir
          * 
          */
-        switch (holdWeapon.weaponType)
+        switch (holdingWeapon.weaponType)
         {
             case Weapon.WeaponType.Null:
                 if (Input.GetKeyDown(KeyCode.V)) CinemachineShake.Instance.ShakeCamera(2f, 2f); //test
@@ -96,8 +100,9 @@ public class CombatController : MonoBehaviour
     {
         if (inputReceiver.IsClickRightMouseButton)
         {
+            //test
             bool isCritical = UnityEngine.Random.Range(0, 100) > 70;
-            DamagePopup.Create(UtilsClass.GetMouseWorldPosition(), 2990, isCritical); 
+            DamagePopup.Create(UtilsClass.GetScreenToWorldPosition(), 2990, isCritical, true);
         }
     }
 
@@ -109,7 +114,7 @@ public class CombatController : MonoBehaviour
             {
                 currentWeaponIndex = 0;
                 SetActiveWeapon();
-                OnActiveWeaponTypeChanged?.Invoke(this, new OnActiveWeaponTypeChangedArgs { weapon = holdWeapon });
+                OnActiveWeaponTypeChanged?.Invoke(this, new OnActiveWeaponTypeChangedArgs { weapon = holdingWeapon });
             }
         }
         if (inputReceiver.IsPressWeapon2Button)
@@ -118,7 +123,7 @@ public class CombatController : MonoBehaviour
             {
                 currentWeaponIndex = 1;
                 SetActiveWeapon();
-                OnActiveWeaponTypeChanged?.Invoke(this, new OnActiveWeaponTypeChangedArgs { weapon = holdWeapon });
+                OnActiveWeaponTypeChanged?.Invoke(this, new OnActiveWeaponTypeChangedArgs { weapon = holdingWeapon });
             }
         }
     }
@@ -128,12 +133,12 @@ public class CombatController : MonoBehaviour
         if (inputReceiver.IsScrollingDown)
         {
             SwitchToPreviousWeapon();
-            OnActiveWeaponTypeChanged?.Invoke(this,new OnActiveWeaponTypeChangedArgs { weapon = holdWeapon });
+            OnActiveWeaponTypeChanged?.Invoke(this, new OnActiveWeaponTypeChangedArgs { weapon = holdingWeapon });
         }
         if (inputReceiver.IsScrollingUp)
         {
             SwitchToNextWeapon();
-            OnActiveWeaponTypeChanged?.Invoke(this, new OnActiveWeaponTypeChangedArgs { weapon = holdWeapon });
+            OnActiveWeaponTypeChanged?.Invoke(this, new OnActiveWeaponTypeChangedArgs { weapon = holdingWeapon });
         }
     }
 
@@ -159,12 +164,12 @@ public class CombatController : MonoBehaviour
         if (CheckIfCanShootWithMagnet())
         {
             shootWaitTime = 0;
-            holdWeapon.Attack();
+            holdingWeapon.Attack();
         }
     }
 
     private bool CheckIfCanShootWithMagnet()
     {
-        return inputReceiver.IsAttacking && holdWeapon.HasEnoughAmmo() && shootWaitTime > holdWeapon.GetShootingInterval();
+        return inputReceiver.IsAttacking && holdingWeapon.HasEnoughAmmo() && shootWaitTime > holdingWeapon.GetShootingInterval();
     }
 }

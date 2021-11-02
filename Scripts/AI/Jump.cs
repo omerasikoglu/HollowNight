@@ -12,16 +12,15 @@ public class Jump : EnemyAction
     private Tween buildUpTween;
     private Tween jumpTween;
 
-    public string animationTriggerName;
     public bool shakeCameraOnLanding;
 
     private bool hasLanded;
-   
+
 
     public override void OnStart()
     {
         buildUpTween = DOVirtual.DelayedCall(buildupTime, StartJump, false);
-        animator.SetTrigger(animationTriggerName);
+        animator.SetTrigger(Datalarimiz.JUMP);
     }
     private void StartJump()
     {
@@ -30,13 +29,13 @@ public class Jump : EnemyAction
 
         jumpTween = DOVirtual.DelayedCall(jumpTime, () =>
         {
-            hasLanded=true;
+            hasLanded = true;
             if (shakeCameraOnLanding)
             {
                 CinemachineShake.Instance.ShakeCamera(2f, 2f);
             }
 
-        } , false);
+        }, false);
     }
     public override TaskStatus OnUpdate()
     {

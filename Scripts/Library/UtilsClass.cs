@@ -5,25 +5,55 @@ public static class UtilsClass
 {
     private static Camera mainCamera;
 
-    public static Vector3 GetMouseViewportPosition() //sol-alt köþe 0.0f | sað-üst 1.0f | kamera hareket etse de hep böyle
-    {                                                 
+    public static Vector3 GetScreenToViewportPosition(Transform transform = null) //sol-alt köþe 0.0f | sað-üst 1.0f | kamera hareket etse de hep böyle
+    {
         if (mainCamera == null) mainCamera = Camera.main;
-
-        Vector3 mousePos = mainCamera.ScreenToViewportPoint(Input.mousePosition); //kameranýn sol altý 0 sað üstü çözünürlük
+        Vector3 mousePos;
+        if (transform == null)
+        {
+            mousePos = mainCamera.ScreenToViewportPoint(Input.mousePosition); //kameranýn sol altý 0 sað üstü çözünürlük
+        }
+        else
+        {
+            mousePos = Camera.main.ScreenToViewportPoint(transform.position); // 0,0,0 döndürüyor
+        }
         mousePos.z = 0f;
         return mousePos;
     }
-    public static Vector3 GetMouseWorldPosition() //sol-alt Dünyada neyse o -299 bile olabilir kamera konumu önemsiz
+    public static Vector3 GetScreenToWorldPosition(Transform transform = null) //sol-alt Dünyada neyse o -299 bile olabilir kamera konumu önemsiz
     {                                               //Dünyadaki 0,0,0 noktasý origin olur
         if (mainCamera == null) mainCamera = Camera.main;
-
-        Vector3 mouseWorldPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 mouseWorldPosition;
+        if (transform == null)
+        {
+            mouseWorldPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        }
+        else
+        {
+            mouseWorldPosition = Camera.main.ScreenToWorldPoint(transform.position);
+        }
         mouseWorldPosition.z = 0f;
         return mouseWorldPosition;
     }
+    public static Vector3 GetWorldToScreenPosition(Transform transform = null) //ayný Vector3'ten döndürmez hiç. ilk girdiðinde kameranýn sol altý 0,0 olur
+    {                                                //70k'lara kadar çýkar ilerledikçe çok artar
+        if (mainCamera == null) mainCamera = Camera.main;
+        Vector3 mouseScreenPosition;
+        if (!transform)
+        {
+            mouseScreenPosition = Camera.main.WorldToScreenPoint(Input.mousePosition);
+        }
+        else
+        {
+            mouseScreenPosition = Camera.main.WorldToScreenPoint(transform.position);
+        }
+        mouseScreenPosition.z = 0;
+        return mouseScreenPosition;
+    }
+
     public static Vector3 GetMouseDirection(Transform bulletSource) //ok atarken gitceði yön vektörünü bulmak için
     {
-        Vector3 mouseVector = GetMouseWorldPosition() - bulletSource.position;
+        Vector3 mouseVector = GetScreenToWorldPosition() - bulletSource.position;
         mouseVector.z = 0f;
         return mouseVector;
     }
@@ -32,13 +62,6 @@ public static class UtilsClass
         Vector3 mouseVector = GetMouseDirection(bulletSource);
         mouseVector.Normalize();
         return mouseVector;
-    }
-    public static Vector3 GetMouseScreenPosition() //ayný Vector3'ten döndürmez hiç. ilk girdiðinde kameranýn sol altý 0,0 olur
-    {                                                //70k'lara kadar çýkar ilerledikçe çok artar
-        if (mainCamera == null) mainCamera = Camera.main;
-        Vector3 mouseScreenPosition = Camera.main.WorldToScreenPoint(Input.mousePosition);
-        mouseScreenPosition.z = 0;
-        return mouseScreenPosition;
     }
     public static Vector3 GetRandomDir()    //x ekseninde random dir normalized
     {

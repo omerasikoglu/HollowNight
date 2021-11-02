@@ -11,5 +11,6 @@ public struct AttackDetails
     
     public Vector2 position; //ataðýn geldiði yön ve konumu için
     public float knockbackPowerX; //geri tepme þiddeti için
+    public bool isCritical;
 
 }
