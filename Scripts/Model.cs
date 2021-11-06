@@ -16,11 +16,9 @@ public abstract class Model : MonoBehaviour
 
     #region Your Knockback
 
-    //private float knockbackSpeedX = 10f;
     //private float knockbackDeathSpeedX = 15f;
-    private float knockbackSpeedY = 2f;
     //private float knockbackDeathSpeedY = 4f;
-    private float knockbackDuration = 0.1f;
+    private float knockbackDuration = 0.1f; //TODO: Þiddetine göre duration'ýn deðiþtiði sistemi yap
 
     private bool isKnockbacking = false;
     private float knockbackStartTime;
@@ -48,16 +46,16 @@ public abstract class Model : MonoBehaviour
     }
     protected virtual void Update()
     {
-        CheckKnockback();
+        CheckKnockbackShouldStop();
     }
-    private void Knockback(int directionX, float knockbackpower = 10f) //düþman soldan vurunca direction 1 oluyor
+    private void YourKnockback(int directionX, float knockbackPowerX) //düþman soldan vurunca direction 1 oluyor
     {
         isKnockbacking = true;
         knockbackStartTime = Time.time;
-        rigidbody.velocity = new Vector2(directionX * knockbackpower, knockbackSpeedY);
-
+        float knockbackPowerY = 2f;
+        rigidbody.velocity = new Vector2(directionX * knockbackPowerX, knockbackPowerY);
     }
-    private void CheckKnockback()
+    private void CheckKnockbackShouldStop()
     {
         if (Time.time >= knockbackStartTime + knockbackDuration && isKnockbacking)
         {
@@ -72,7 +70,7 @@ public abstract class Model : MonoBehaviour
     }
     private void HealthManager_OnDamaged(object sender, HealthManager.OnDamagedEventArgs e)
     {
-        Knockback(e.knockbackDirection, e.knockbackPowerX);
+        YourKnockback(e.knockbackDirection, e.knockbackPowerX);
         FlashYellow();
     }
 

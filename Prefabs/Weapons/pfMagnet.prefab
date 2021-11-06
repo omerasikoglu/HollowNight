@@ -129,19 +129,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponName: Magnet
+  attackingInterval: 2
+  weaponDamage: 0
+  isRangedWeapon: 0
   attackRange: 0
-  damage: 1
-  attackingInterval: 3
+  projectileDamage: 0
+  maxAmmo: 10
+  currentAmmo: 0
   audioSource: {fileID: 1958967812738127396}
   attackAudio: {fileID: 8300000, guid: a5baffef07262b1418b577f268cc5525, type: 3}
   attackAudio2: {fileID: 8300000, guid: a5baffef07262b1418b577f268cc5525, type: 3}
   firePoint: {fileID: 1958967813809239023}
-  maxAmmo: 2
-  projectileSpeed: 1
-  projectileImpactAudio: {fileID: 8300000, guid: 591244f665579984e8235d0b92525e22, type: 3}
   weaponReloadAudio: {fileID: 8300000, guid: 56b77369191401e4fb5b6557f2eaaa1c, type: 3}
-  currentAmmo: 0
-  projectilePrefab: {fileID: 2994287670611638988, guid: 50c57149d02a79049b9fecc1b8b266af, type: 3}
+  holdingProjectileList:
+  - {fileID: 920296124543386168, guid: 1a1890cd7b74ed8479e815ebf2781546, type: 3}
+  - {fileID: 6927416360317162189, guid: 50c57149d02a79049b9fecc1b8b266af, type: 3}
+  - {fileID: 6927416360317162189, guid: 1fd26ed70ea510147b1ddbc9c2e16a95, type: 3}
+  magnetWeaponDamage: 2
+  magnetMaxAmmo: 2
 --- !u!82 &1958967812738127396
 AudioSource:
   m_ObjectHideFlags: 0
@@ -149,11 +154,11 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1958967812738127385}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

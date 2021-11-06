@@ -1408,6 +1408,7 @@ MonoBehaviour:
   weapon2Button: 50
   mapButton: 109
   specialPowerButton: 113
+  reloadButton: 114
   mousePosition: {x: 0, y: 0, z: 0}
 --- !u!61 &1608808988
 BoxCollider2D:
@@ -2106,10 +2107,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Magnet
       objectReference: {fileID: 0}
-    - target: {fileID: 1958967812738127396, guid: b330b32cef8d1ac498e77e3ccb5c4b48, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1958967812738127398, guid: b330b32cef8d1ac498e77e3ccb5c4b48, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -2153,34 +2150,6 @@ PrefabInstance:
     - target: {fileID: 1958967812738127398, guid: b330b32cef8d1ac498e77e3ccb5c4b48, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1958967812738127399, guid: b330b32cef8d1ac498e77e3ccb5c4b48, type: 3}
-      propertyPath: damage
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1958967812738127399, guid: b330b32cef8d1ac498e77e3ccb5c4b48, type: 3}
-      propertyPath: maxAmmo
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1958967812738127399, guid: b330b32cef8d1ac498e77e3ccb5c4b48, type: 3}
-      propertyPath: pfProjectile
-      value: 
-      objectReference: {fileID: 2994287670611638988, guid: 1fd26ed70ea510147b1ddbc9c2e16a95, type: 3}
-    - target: {fileID: 1958967812738127399, guid: b330b32cef8d1ac498e77e3ccb5c4b48, type: 3}
-      propertyPath: projectileSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1958967812738127399, guid: b330b32cef8d1ac498e77e3ccb5c4b48, type: 3}
-      propertyPath: attackingInterval
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1958967812738127399, guid: b330b32cef8d1ac498e77e3ccb5c4b48, type: 3}
-      propertyPath: holdingBulletType
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1958967812738127399, guid: b330b32cef8d1ac498e77e3ccb5c4b48, type: 3}
-      propertyPath: projectileDisappearTime
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b330b32cef8d1ac498e77e3ccb5c4b48, type: 3}

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameAssets : MonoBehaviour
 {
-    public static GameAssets instance;
+    private static GameAssets instance;
     public static GameAssets Instance
     {
         get { if (instance == null)

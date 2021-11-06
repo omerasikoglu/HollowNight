@@ -17,10 +17,12 @@ public class CombatController : MonoBehaviour
     [SerializeField] private LayerMask whatIsDamageable;
     [SerializeField] private Weapon[] holdingWeaponsArray; //karakterimizin üzerinde olan weaponlar
 
+
     private WeaponListSO weaponList; //tüm weapon datasý
     private Dictionary<Weapon, string> weaponDic;
 
     private Weapon holdingWeapon; //o an elimizde tuttuðumuz weapon
+
 
     private InputReceiver inputReceiver;
     private PlayerEnergyManager energyManager;
@@ -34,7 +36,7 @@ public class CombatController : MonoBehaviour
         inputReceiver = GetComponent<InputReceiver>();
     }
 
-    private void SetData()
+    private void SetDics()
     {
         weaponDic = new Dictionary<Weapon, string>();
         weaponList = Resources.Load<WeaponListSO>(typeof(WeaponListSO).Name);
@@ -63,49 +65,36 @@ public class CombatController : MonoBehaviour
 
     private void Update()
     {
-        HandleSwitchingWeaponsWithMouseScroll();
-        HandleSwitchingWeaponsWithAlphaNumbers();
-
+        HandleWeaponSwitch();
         HandleRightClick();
+        HandleShooting();
+        HandleReloading();
 
-        if (holdingWeapon.weaponDistanceType == Weapon.WeaponDistanceType.Ranged)
-        {
+        //if (holdingWeapon.GetIsRangedWeapon())
+        //{
 
-        }
+        //}
         /*  TODO
          *   Tuttuðumuz silaha göre girdiðimiz inputlar, VFXler, animasyonlar da
          *  göre deðiþir
          * 
          */
-        switch (holdingWeapon.weaponType)
-        {
-            case Weapon.WeaponType.Null:
-                if (Input.GetKeyDown(KeyCode.V)) CinemachineShake.Instance.ShakeCamera(2f, 2f); //test
-                break;
-            case Weapon.WeaponType.Bow:
-                break;
-            case Weapon.WeaponType.Gun:
-                break;
-            case Weapon.WeaponType.Magnet:
-                HandleMagnetShooting();
-                break;
-            default:
-                break;
-        }
-
-
     }
 
-    private void HandleRightClick()
+    private void HandleReloading()
     {
-        if (inputReceiver.IsClickRightMouseButton)
+        if (holdingWeapon.GetIsRangedWeapon() && inputReceiver.IsReloading)
         {
-            //test
-            bool isCritical = UnityEngine.Random.Range(0, 100) > 70;
-            DamagePopup.Create(UtilsClass.GetScreenToWorldPosition(), 2990, isCritical, true);
+            holdingWeapon.Reload();
         }
     }
 
+    #region HandleWeaponSwitch
+    private void HandleWeaponSwitch()
+    {
+        HandleSwitchingWeaponsWithMouseScroll();
+        HandleSwitchingWeaponsWithAlphaNumbers();
+    }
     private void HandleSwitchingWeaponsWithAlphaNumbers()
     {
         if (inputReceiver.IsPressWeapon1Button)
@@ -157,19 +146,30 @@ public class CombatController : MonoBehaviour
             currentWeaponIndex = 0;
         SetActiveWeapon();
     }
+    #endregion
+    private void HandleRightClick()
+    {
+        if (inputReceiver.IsClickRightMouseButton)
+        {
+            //test
+            bool isCritical = UnityEngine.Random.Range(0, 100) > 70;
+            DamagePopup.Create(UtilsClass.GetScreenToWorldPosition(), 2990, isCritical, true);
+        }
+    }
 
-    private void HandleMagnetShooting()
+    private void HandleShooting()
     {
         shootWaitTime += Time.deltaTime;
-        if (CheckIfCanShootWithMagnet())
+        if (CheckIfCanShoot())
         {
             shootWaitTime = 0;
             holdingWeapon.Attack();
         }
     }
 
-    private bool CheckIfCanShootWithMagnet()
+    private bool CheckIfCanShoot()
     {
+        //TODO: rangedWeapondan HasEnoughAmmoya ulaþ   
         return inputReceiver.IsAttacking && holdingWeapon.HasEnoughAmmo() && shootWaitTime > holdingWeapon.GetShootingInterval();
     }
 }

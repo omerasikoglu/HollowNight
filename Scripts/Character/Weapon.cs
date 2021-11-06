@@ -1,87 +1,117 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public abstract class Weapon : MonoBehaviour
 {
-    public enum WeaponDistanceType
-    {
-        Null, Ranged, Melee
-    }
-    public enum WeaponType
-    {
-        Null, Bow, Gun, Magnet
-    }
-    public enum BulletType
-    {
-        Null, Projectile, Coin
-    }
-    [Header("Weapon Script")]
-    [ReadOnly] public WeaponDistanceType weaponDistanceType;
-    [ReadOnly] public WeaponType weaponType;
-    [ReadOnly] public BulletType bulletType;
+    [Header("[Weapon Script]")]
 
+    //both
     [ReadOnly] public string weaponName;
-    [ReadOnly] public float attackRange;
     [ReadOnly] public float attackingInterval; //sald�r�lar aras� s�re
+    [ReadOnly] public int weaponDamage;
+    [ReadOnly] public bool isRangedWeapon;
+
+
+    //ranged
+    [ReadOnly] public float attackRange;
+    [ReadOnly] public int projectileDamage;
+    [ReadOnly] public int maxAmmo;
+    [ReadOnly] public int currentAmmo;
 
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip attackAudio;
     [SerializeField] private AudioClip attackAudio2;
 
+
+    //melee
+
+
+    #region Both
     protected virtual void Awake()
     {
 
-    }
-    public virtual bool HasEnoughAmmo()
-    {
-        return true;
     }
     public virtual void Attack()
     {
         PlayAudioClip(GetAttackAudioClip());
     }
-    public virtual void Reload()
-    {
 
-    }
-    private AudioClip GetAttackAudioClip()
+
+    public bool GetIsRangedWeapon()
     {
-        return UnityEngine.Random.Range(0, 1) % 2 == 0 ? attackAudio : attackAudio2;
+        return isRangedWeapon;
+    }
+    public int GetTotalWeaponDamage()
+    {
+        return GetOnlyWeaponDamage() + GetProjectileDamage();
+    }
+    public int GetOnlyWeaponDamage()
+    {
+        return weaponDamage;
     }
 
-    private void PlayAudioClip(AudioClip clip)
+    protected void PlayAudioClip(AudioClip clip)
     {
         audioSource.clip = clip;
         audioSource.Stop();
         audioSource.Play();
     }
-
-    public float GetShootingInterval()
+    private AudioClip GetAttackAudioClip()
     {
-        return attackingInterval;
+        return UnityEngine.Random.Range(0, 2) % 2 == 0 ? attackAudio : attackAudio2;
     }
+
     public string GetWeaponName()
     {
         return weaponName;
     }
-    public int GetTotalWeaponDamage()
-    {
-        return GetWeaponDamage() + GetBulletDamage();
-    }
-    public int GetWeaponDamage() => weaponType switch
-    {
-        WeaponType.Magnet => 2,
-        WeaponType.Bow => 1,
-        WeaponType.Null => throw new System.NotImplementedException(),
-        WeaponType.Gun => throw new System.NotImplementedException(),
-        _ => 0,
-    };
+    #endregion
 
-    public int GetBulletDamage() => bulletType switch
+
+    #region Ranged
+    public virtual bool HasEnoughAmmo()
     {
-        BulletType.Projectile => 1,
-        BulletType.Coin => 2,
-        _ => 1
-    };
+        return true;
+    }
+    public virtual void Reload()
+    {
+        currentAmmo = maxAmmo;
+    }
+    public int GetProjectileDamage()
+    {
+        return projectileDamage;
+    }
+    public float GetShootingInterval()
+    {
+        return attackingInterval;
+    }
+
+    #endregion
+
+
+    #region Melee
+
+    #endregion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
+

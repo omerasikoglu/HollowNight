@@ -14,6 +14,7 @@ public class InputReceiver : MonoBehaviour
     [SerializeField] private KeyCode weapon2Button;
     [SerializeField] private KeyCode mapButton;
     [SerializeField] private KeyCode specialPowerButton;
+    [SerializeField] private KeyCode reloadButton;
 
     [ReadOnly] public Vector3 mousePosition;
 
@@ -35,6 +36,7 @@ public class InputReceiver : MonoBehaviour
     public bool IsPressSpecialPowerButton { get; private set; }
     public bool IsClickLeftMouseButton { get; private set; }
     public bool IsClickRightMouseButton { get; private set; }
+    public bool IsReloading { get; private set; }
 
     public float HorizontalInput { get; private set; }
     public float VerticalInput { get; private set; }
@@ -75,6 +77,7 @@ public class InputReceiver : MonoBehaviour
         IsPressSpecialPowerButton = Input.GetKeyDown(specialPowerButton);
         IsClickLeftMouseButton = Input.GetMouseButtonDown(0);
         IsClickRightMouseButton = Input.GetMouseButtonDown(1);
+        IsReloading = Input.GetKeyDown(reloadButton);
 
     }
 }
