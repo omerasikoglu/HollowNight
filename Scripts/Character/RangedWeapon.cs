@@ -4,57 +4,53 @@ using UnityEngine;
 
 public abstract class RangedWeapon : Weapon
 {
-    [Header("Ranged Weapon Script")]
-    [SerializeField] protected Transform firePoint;
-
-    [SerializeField] private int maxAmmo;
-    [ReadOnly] public int currentAmmo;
-
-    [ReadOnly] public float projectileSpeed = 10f;
-    [ReadOnly] public float projectileDisappearTime = 2;
-
-    [SerializeField] private AudioClip projectileImpactAudio;
+    [Header("[Ranged Weapon Script]")]
+    [ReadOnly] public Transform holdingProjectile;
+    [SerializeField] protected List<Transform> holdingProjectileList;
     [SerializeField] private AudioClip weaponReloadAudio;
-
-    
 
     protected override void Awake()
     {
         base.Awake();
-        weaponDistanceType = WeaponDistanceType.Ranged;
-        currentAmmo = maxAmmo == 0 ? Mathf.FloorToInt(Mathf.Infinity) : maxAmmo; //ammosuz ranged ise hep ammosu var
+        isRangedWeapon = true;
+
+
+        holdingProjectile = holdingProjectileList[0];
+        projectileDamage = holdingProjectile.GetComponent<Projectile>().GetProjectileDamage();
+    }
+    public virtual Vector3 GetFirePoint()
+    {
+        return Vector3.zero;
     }
 
+    #region Overrides
     public override void Attack()
     {
         base.Attack();
-        currentAmmo--;
-
     }
+
+    public override void Reload()
+    {
+        base.Reload();
+        PlayAudioClip(weaponReloadAudio);
+    }
+
     public override bool HasEnoughAmmo()
     {
-        return currentAmmo > 0 ? true : false;
-    }
-    public float GetProjectileSpeed()
-    {
-        return projectileSpeed;
+        return currentAmmo > 0;
     }
 
-    public AudioClip GetImpactAudio()
+    #endregion
+
+    public Transform GetHoldingProjectile()
     {
-        return projectileImpactAudio;
+        return holdingProjectile;
     }
-    public int GetCurrentAmmo()
+    private Transform ChangeHoldingProjectile()
     {
-        return currentAmmo;
+        int i = UnityEngine.Random.Range(0, holdingProjectileList.Count);
+        holdingProjectile = holdingProjectileList[i];
+        return holdingProjectileList[i];
     }
 
-    public float GetProjectileDisappearTime()
-    {
-        return projectileDisappearTime;
-    }
-    public Vector3 GetFirePoint()
-    {
-        return firePoint.transform.position;
-    }
 }

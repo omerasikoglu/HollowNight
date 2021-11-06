@@ -4,40 +4,29 @@ using UnityEngine;
 
 public class Magnet : RangedWeapon
 {
-    [Header("Magnet Script")]
-    [SerializeField] private BulletType holdingBulletType;
-    [ReadOnly] public int weaponDamage; //totalDamage = weaponDmg + bulletDmg
-    [ReadOnly] public int bulletDamage;
+    [Header("[Magnet Script]")]
+    [SerializeField] protected Transform firePoint;
+    [ReadOnly] public int magnetWeaponDamage = 2; //totalDamage = weaponDmg + bulletDmg
+    [ReadOnly] public int magnetMaxAmmo = 2;
 
     protected sealed override void Awake()
     {
         base.Awake();
-        weaponType = WeaponType.Magnet;
-        bulletType = holdingBulletType;
-
-        weaponDamage = GetWeaponDamage();
-        bulletDamage = GetBulletDamage();
-        projectileSpeed = 5f;
-
+        weaponDamage = magnetWeaponDamage; //TODO: SO'dan çek bunu
+        
+        currentAmmo = magnetMaxAmmo;
+        maxAmmo = magnetMaxAmmo;
     }
 
     public sealed override void Attack()
     {
         base.Attack();
-
-        switch (bulletType)
-        {
-            case BulletType.Projectile:
-                Projectile.Create(this);
-                break;
-            case BulletType.Coin:
-                Projectile.Create(this);
-                break;
-            case BulletType.Null:
-                break;
-            default:
-                break;
-        }
+        currentAmmo--;
+        Projectile.Create(this);
     }
 
+    public sealed override Vector3 GetFirePoint()
+    {
+        return firePoint.transform.position;
+    }
 }

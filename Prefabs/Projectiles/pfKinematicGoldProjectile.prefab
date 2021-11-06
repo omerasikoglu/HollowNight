@@ -91,9 +91,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6927416360317162189}
-  - component: {fileID: 2994287670611638988}
   - component: {fileID: 1734791549662871310}
   - component: {fileID: 8771458719979869528}
+  - component: {fileID: 4161871453942044454}
   m_Layer: 0
   m_Name: pfKinematicGoldProjectile
   m_TagString: Untagged
@@ -116,18 +116,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2994287670611638988
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8022289877814685416}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83eb463485e99dc4aafac1a10611c47c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!50 &1734791549662871310
 Rigidbody2D:
   serializedVersion: 4
@@ -165,3 +153,19 @@ CircleCollider2D:
   m_Offset: {x: 0.009968221, y: 0.023259223}
   serializedVersion: 2
   m_Radius: 0.3737359
+--- !u!114 &4161871453942044454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8022289877814685416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80049be23b29f944a9b9591335ff4c7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectileImpactAudio: {fileID: 8300000, guid: 591244f665579984e8235d0b92525e22, type: 3}
+  damage: 1
+  speed: 5
+  disappearTime: 2
